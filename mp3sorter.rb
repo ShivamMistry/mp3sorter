@@ -21,7 +21,8 @@ def sort_v2(f_path, dest_dir)
 				end
 			else
 				puts "The ID3 tag on #{f_path} is obsolete and not supported: ID3v2.#{major}.#{minor}"
-				#return;
+				#the code is still in development for that
+				return;
 			end
 			title = ''
 			artist = ''
@@ -34,7 +35,9 @@ def sort_v2(f_path, dest_dir)
 					name = header[0..3]
 					size = header[4..7].unpack("N")[0]
 					flags= header[8..9]
-					printf "size: %d name: %s\n",size, name
+					#printf "size: %d name: %s\n",size, name
+					#ID3v2 tags are split into 'frames', each property is stored in a frame
+					#there are some other frame names for title, artist, album - but these seem to be the most commonly used
 					if name == "TPE1"
 						artist = fp.read(size)
 					elsif name == "TALB"
@@ -57,9 +60,7 @@ def sort_v2(f_path, dest_dir)
 					header = fp.read(6)
 					name = header[0..2]
 					puts name
-					tsize = [0]
-					header[3..5].each_byte{|b| tsize << b}
-					size = tsize.to_s.unpack("N")[0]
+					size = header[3..5].unpack("N")
 					puts size.to_i
 					fp.seek(size, IO::SEEK_CUR)
 				end
