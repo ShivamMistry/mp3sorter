@@ -11,6 +11,9 @@ ID3v2.2 and below is currently not supported.
 ## Usage
 
 Both the C and Ruby version take the same arguments:
-	mp3sorter input-directory|file output-directory
+
+  mp3sorter input-directory|file output-directory
+
 If there is more than one directory/file specified, the output directory MUST be specified.
+
 If a single file/dir is specified and no output directory is specified, the current working directory will be used.
