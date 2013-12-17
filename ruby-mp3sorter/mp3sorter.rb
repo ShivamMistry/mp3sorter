@@ -22,7 +22,7 @@ class ID3v2
 
     def initialize(fp)
       header = fp.read(10)
-      @name = header[0..3].to_s.strip!
+      @name = header[0..3].to_s.strip
       @size = header[4..7].unpack("N")[0]
       @flags= header[8..9]
       @data = fp.read(@size)
