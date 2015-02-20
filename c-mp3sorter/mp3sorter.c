@@ -173,13 +173,13 @@ int main(int argc, char **argv)
                         //read file attributes into stat struct
                         if (stat(path, &s) == 0)
                         {
-                                if (S_IFDIR(s.st_mode))
+                                if (S_ISDIR(s.st_mode))
                                 {
                                         //the passed path was a directory
                                         sort_dir(path, dir);
 
                                 }
-                                else if (S_IFREG(s.st_mode))
+                                else if (S_ISREG(s.st_mode))
                                 {
                                         //single file passed
                                         sort(argv[1], dir);
