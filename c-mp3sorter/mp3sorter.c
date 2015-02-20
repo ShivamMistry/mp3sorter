@@ -14,7 +14,38 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <stdlib.h>
+#include <stdint.h>
 
+typedef struct 
+{
+    char name[4];
+    uint32_t size;
+    uint16_t flags;
+} id3v2_frame_header;
+
+typedef struct 
+{
+    char tag[3];
+    uint8_t major;
+    uint8_t minor;
+    uint32_t tag_size;
+} id3v2_tag_header;
+
+#define ID3V2_EXTENDED_HEADER 0x64
+
+void sort_v2(const char* file, const char* dest_dir)
+{
+    FILE *fp;
+    fp = fopen(file, "r");
+    if (fp == NULL)
+    {
+        printf("File %s does not exist", file);
+        return;
+    }
+    id3v2_tag_header header;
+    fread(&header, sizeof(id3v2_tag_header), 1, fp);
+
+}
 
 void sort(const char* file, const char* dest_dir)
 {
