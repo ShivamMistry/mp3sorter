@@ -12,8 +12,10 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <dirent.h>
 #include <stdlib.h>
+
 
 void sort(const char* file, const char* dest_dir)
 {
@@ -40,7 +42,6 @@ void sort(const char* file, const char* dest_dir)
                         pch = strchr(title, '/');
                         while (pch != NULL)
                         {
-                                printf("found / at %d\n", pch - title);
                                 //replace the / with a back slash
                                 title[pch - title] = '\\';
                                 //search from char after current slash
@@ -62,10 +63,10 @@ void sort(const char* file, const char* dest_dir)
                                                 + strlen(title) + 8);
                 sprintf(dir, "%s/%s", dest_dir, artist);
                 //create artist directory
-                mkdir(dir);
+                mkdir(dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
                 sprintf(dir, "%s/%s", dir, album);
                 //create album directory
-                mkdir(dir);
+                mkdir(dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
                 puts(dir);
                 //append file name to path
                 sprintf(dir, "%s/%s.mp3", dir, title);
@@ -172,13 +173,13 @@ int main(int argc, char **argv)
                         //read file attributes into stat struct
                         if (stat(path, &s) == 0)
                         {
-                                if (s.st_mode & S_IFDIR)
+                                if (S_IFDIR(s.st_mode))
                                 {
                                         //the passed path was a directory
                                         sort_dir(path, dir);
 
                                 }
-                                else if (s.st_mode & S_IFREG)
+                                else if (S_IFREG(s.st_mode))
                                 {
                                         //single file passed
                                         sort(argv[1], dir);
